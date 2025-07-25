@@ -6,10 +6,9 @@ export default function HomePage() {
       <div className="max-w-4xl mx-auto text-center">
         {/* Logo */}
         <div className="mb-12">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-purple-600 rounded-2xl mb-4">
-            <div className="text-white text-2xl font-bold">SQ</div>
+          <div className="mb-4">
+            <img src="/sin-querella-logo.png" alt="Sin Querella Logo" className="h-20 mx-auto" />
           </div>
-          <div className="text-purple-600 text-xl font-semibold">Sin Querella</div>
         </div>
 
         {/* Main Content */}

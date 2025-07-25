@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { ChevronDownIcon, RouteIcon as Road, LayersIcon as Lanes, ArrowLeftRight, X } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 const accidentSections = [
   {
@@ -58,9 +59,26 @@ const accidentSections = [
 export default function AccidentTypePage() {
   const [expandedSection, setExpandedSection] = useState<number | null>(null)
   const [showInfractionModal, setShowInfractionModal] = useState(false)
+  const router = useRouter()
 
   const toggleSection = (sectionId: number) => {
     setExpandedSection(expandedSection === sectionId ? null : sectionId)
+  }
+
+  const handleDiagramSelection = (diagramId: string, sectionId: number) => {
+    // Store selected diagram info and navigate to report form
+    const diagramInfo = {
+      diagramId,
+      sectionId,
+      sectionTitle: accidentSections.find((s) => s.id === sectionId)?.title || "",
+      timestamp: new Date().toISOString(),
+    }
+
+    // Store in sessionStorage for the next page
+    sessionStorage.setItem("selectedDiagram", JSON.stringify(diagramInfo))
+
+    // Navigate to accident report form
+    router.push("/accident-report")
   }
 
   const handleDiagramIV2Selection = () => {
@@ -68,10 +86,20 @@ export default function AccidentTypePage() {
   }
 
   const handleInfractionResponse = (response: string) => {
-    // Here you would handle the responsibility change based on the response
     console.log("Infraction response:", response)
     setShowInfractionModal(false)
-    // You could update responsibility percentages based on the response
+
+    // Store the infraction response and proceed
+    const diagramInfo = {
+      diagramId: "IV-2",
+      sectionId: 4,
+      sectionTitle: "Sección IV",
+      infractionResponse: response,
+      timestamp: new Date().toISOString(),
+    }
+
+    sessionStorage.setItem("selectedDiagram", JSON.stringify(diagramInfo))
+    router.push("/accident-report")
   }
 
   return (
@@ -133,7 +161,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("IV-1", 4)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -184,7 +215,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("IV-3", 4)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -208,7 +242,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("IV-4", 4)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -232,7 +269,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("IV-5", 4)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -263,7 +303,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("II-1", 2)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -287,7 +330,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("II-2", 2)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -311,7 +357,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("II-3", 2)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -341,7 +390,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("I-1", 1)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -364,7 +416,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("I-2", 1)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -388,7 +443,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("I-3", 1)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -412,7 +470,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("I-4", 1)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -444,7 +505,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("III-1", 3)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -468,7 +532,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("III-2", 3)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -491,7 +558,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("III-3", 3)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -514,7 +584,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("III-4", 3)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -537,7 +610,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("III-5", 3)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -568,7 +644,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-1", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -592,7 +671,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-2", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -616,7 +698,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-3", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -640,7 +725,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-4", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -664,7 +752,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-5", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -688,7 +779,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-6", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -713,7 +807,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 50%</p>
                                   <p className="text-sm">B: 50%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-7", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -737,7 +834,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("V-8", 5)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -768,7 +868,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("VI-1", 6)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -791,7 +894,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("VI-2", 6)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -815,7 +921,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("VI-3", 6)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -839,7 +948,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("VI-4", 6)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -863,7 +975,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("VI-5", 6)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
@@ -887,7 +1002,10 @@ export default function AccidentTypePage() {
                                   <p className="text-sm">A: 100%</p>
                                   <p className="text-sm">B: 0%</p>
                                 </div>
-                                <button className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                                <button
+                                  onClick={() => handleDiagramSelection("VI-6", 6)}
+                                  className="mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                                >
                                   Seleccionar este diagrama
                                 </button>
                               </div>
